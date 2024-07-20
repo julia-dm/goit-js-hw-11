@@ -10,7 +10,9 @@ const elements = {
   input: document.querySelector('.search-input'),
   gallery: document.querySelector('.card-container'),
   loader: document.querySelector('.loader'),
+  btnLoad: document.querySelector('.btn'),
 };
+let page = 1;
 
 elements.searchForm.addEventListener('submit', handleSearch);
 
@@ -69,4 +71,19 @@ function handleSearch(event) {
 const lightbox = new simpleLightbox('.card-container a', {
   captionsData: 'alt',
   captionDelay: 250,
+});
+elements.btnLoad.addEventListener('click', async () => {
+  try {
+    const posts = await getPicture();
+    showSearchResults(data);
+    // Increase the group number
+    page += 1;
+
+    // Replace button text after first request
+    if (page > 1) {
+      elements.btnLoad.textContent = 'Fetch more posts';
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
